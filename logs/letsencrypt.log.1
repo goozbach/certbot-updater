@@ -1,0 +1,51 @@
+2016-11-22 04:29:21,222:DEBUG:certbot.main:Root logging level set at 20
+2016-11-22 04:29:21,223:INFO:certbot.main:Saving debug log to /var/log/letsencrypt/letsencrypt.log
+2016-11-22 04:29:21,228:DEBUG:certbot.main:certbot version: 0.9.3
+2016-11-22 04:29:21,228:DEBUG:certbot.main:Arguments: []
+2016-11-22 04:29:21,229:DEBUG:certbot.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#webroot,PluginEntryPoint#null,PluginEntryPoint#manual,PluginEntryPoint#standalone)
+2016-11-22 04:29:21,233:DEBUG:certbot.plugins.selection:Requested authenticator None and installer None
+2016-11-22 04:29:21,288:DEBUG:certbot.plugins.selection:Multiple candidate plugins: * webroot
+Description: Place files in webroot directory
+Interfaces: IAuthenticator, IPlugin
+Entry point: webroot = certbot.plugins.webroot:Authenticator
+Initialized: <certbot.plugins.webroot.Authenticator object at 0x7f385634ffd0>
+Prep: True
+
+* standalone
+Description: Spin up a temporary webserver
+Interfaces: IAuthenticator, IPlugin
+Entry point: standalone = certbot.plugins.standalone:Authenticator
+Initialized: <certbot.plugins.standalone.Authenticator object at 0x7f385634f2d0>
+Prep: True
+2016-11-22 04:29:25,885:DEBUG:certbot.plugins.selection:Selected authenticator <certbot.plugins.standalone.Authenticator object at 0x7f385634f2d0> and installer None
+2016-11-22 04:29:25,924:DEBUG:certbot.main:Picked account: <Account(0b6676863c5d45a1e354a8343d31d8e4)>
+2016-11-22 04:29:25,926:DEBUG:root:Sending GET request to https://acme-v01.api.letsencrypt.org/directory. args: (), kwargs: {}
+2016-11-22 04:29:25,936:INFO:requests.packages.urllib3.connectionpool:Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-11-22 04:29:26,016:DEBUG:certbot.main:Exiting abnormally:
+Traceback (most recent call last):
+  File "/usr/bin/certbot", line 9, in <module>
+    load_entry_point('certbot==0.9.3', 'console_scripts', 'certbot')()
+  File "/usr/lib/python2.7/dist-packages/certbot/main.py", line 776, in main
+    return config.func(config, plugins)
+  File "/usr/lib/python2.7/dist-packages/certbot/main.py", line 558, in obtain_cert
+    le_client = _init_le_client(config, auth, installer)
+  File "/usr/lib/python2.7/dist-packages/certbot/main.py", line 375, in _init_le_client
+    return client.Client(config, acc, authenticator, installer, acme=acme)
+  File "/usr/lib/python2.7/dist-packages/certbot/client.py", line 190, in __init__
+    acme = acme_from_config_key(config, self.account.key)
+  File "/usr/lib/python2.7/dist-packages/certbot/client.py", line 42, in acme_from_config_key
+    return acme_client.Client(config.server, key=key, net=net)
+  File "/usr/lib/python2.7/dist-packages/acme/client.py", line 63, in __init__
+    self.net.get(directory).json())
+  File "/usr/lib/python2.7/dist-packages/acme/client.py", line 624, in get
+    self._send_request('GET', url, **kwargs), content_type=content_type)
+  File "/usr/lib/python2.7/dist-packages/acme/client.py", line 606, in _send_request
+    response = self.session.request(method, url, *args, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 468, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/sessions.py", line 576, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python2.7/dist-packages/requests/adapters.py", line 433, in send
+    raise SSLError(e, request=request)
+SSLError: [Errno 2] No such file or directory
+
