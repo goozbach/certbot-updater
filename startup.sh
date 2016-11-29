@@ -4,4 +4,8 @@ echo "this is startup"
 
 mkdir -p /etc/letsencrypt
 
-certbot certonly --standalone -n --domains rishi.goozbach.net -m derek@goozbach.com --agree-tos
+while true
+do
+  certbot certonly --standalone -n --domains rishi.goozbach.net -m derek@goozbach.com --agree-tos
+  sleep 30d
+done
