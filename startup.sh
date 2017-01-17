@@ -1,5 +1,15 @@
 #!/bin/sh
 
+function undo_sleep {
+    echo -e "\nrunning undo sleep"
+    if [[ -n ${SLEEP_PID} ]]
+    then
+        kill ${SLEEP_PID}
+    fi
+}
+
+trap undo_sleep SIGINT SIGTERM
+
 echo "this is startup"
 
 mkdir -p /etc/letsencrypt
@@ -25,8 +35,13 @@ case ${CERTBOT_METHOD} in
     ;;
 esac
 
-while true
-do
-  certbot certonly ${CMD_METHOD} -n --domains ${CERTBOT_DOMAINS} -m ${ACCOUNT_EMAIL} --agree-tos --expand ${CMD_ARGS}
-  sleep 30d
-done
+function main {
+  while true
+  do
+    certbot certonly ${CMD_METHOD} -n --domains ${CERTBOT_DOMAINS} -m ${ACCOUNT_EMAIL} --agree-tos --expand ${CMD_ARGS}
+    sleep 30d &
+    SLEEP_PID=$!
+  done
+}
+
+main
