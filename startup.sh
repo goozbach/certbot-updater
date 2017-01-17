@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function undo_sleep {
     echo -e "\nrunning undo sleep"
@@ -8,7 +8,19 @@ function undo_sleep {
     fi
 }
 
-trap undo_sleep SIGINT SIGTERM
+function cleanup {
+    echo -e "\ncleaning up"
+    if [[ -n ${SLEEP_PID} ]]
+    then
+        kill ${SLEEP_PID}
+    fi
+    exit
+}
+
+
+trap undo_sleep SIGINT
+
+trap cleanup SIGTERM
 
 echo "this is startup"
 
@@ -41,6 +53,7 @@ function main {
     certbot certonly ${CMD_METHOD} -n --domains ${CERTBOT_DOMAINS} -m ${ACCOUNT_EMAIL} --agree-tos --expand ${CMD_ARGS}
     sleep 30d &
     SLEEP_PID=$!
+    wait
   done
 }
 
